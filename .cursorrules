@@ -1,0 +1,5 @@
+# Regras do projeto
+- Ícones: usar apenas componentes do pacote `lucide-react` em toda a biblioteca.
+- Evitar adicionar outras bibliotecas de ícones; centralizar ícones no `lucide-react`.
+
+
