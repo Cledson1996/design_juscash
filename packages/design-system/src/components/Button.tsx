@@ -8,7 +8,7 @@ import {
 } from "antd";
 import type { ButtonToken } from "antd/es/button/style/token";
 import { designSystemColors } from "../theme";
-import { radius } from "../theme";
+import { radius, spacing } from "../theme";
 
 type AntdButtonType = NonNullable<AntdButtonProps["type"]>;
 
@@ -26,13 +26,11 @@ export interface ButtonProps
   extends Omit<AntdButtonProps, "type" | "size" | "danger"> {
   type?: ExtendedButtonType;
   dsSize?: DsSize;
-  isIcon?: boolean;
   size?: AntdButtonProps["size"];
 }
 
 function getPrimaryTokens(): Partial<ButtonToken> {
   return {
-    borderRadius: 8,
     defaultBg: designSystemColors.brand.primary[600],
     defaultColor: designSystemColors.neutral[50],
     defaultHoverColor: designSystemColors.neutral[50],
@@ -48,7 +46,6 @@ function getPrimaryTokens(): Partial<ButtonToken> {
 
 function getSecondaryTokens(): Partial<ButtonToken> {
   return {
-    borderRadius: 8,
     defaultBg: designSystemColors.brand.secondary[700],
     defaultColor: designSystemColors.neutral[50],
     defaultActiveColor: designSystemColors.neutral[50],
@@ -64,7 +61,6 @@ function getSecondaryTokens(): Partial<ButtonToken> {
 
 function getGhostTokens(): Partial<ButtonToken> {
   return {
-    borderRadius: 8,
     defaultColor: designSystemColors.neutral[800],
     defaultBorderColor: "transparent",
     defaultBg: "transparent",
@@ -82,7 +78,6 @@ function getGhostTokens(): Partial<ButtonToken> {
 
 function getDestructiveTokens(): Partial<ButtonToken> {
   return {
-    borderRadius: 8,
     colorError: designSystemColors.feedback.red[500],
     colorErrorHover: designSystemColors.feedback.red[900],
     colorErrorActive: designSystemColors.feedback.red[900],
@@ -93,7 +88,6 @@ function getDestructiveTokens(): Partial<ButtonToken> {
 
 function getNeutralTokens(): Partial<ButtonToken> {
   return {
-    borderRadius: 8,
     defaultBg: designSystemColors.neutral[200],
     defaultColor: designSystemColors.neutral[800],
     defaultBorderColor: designSystemColors.neutral[300],
@@ -109,7 +103,6 @@ function getNeutralTokens(): Partial<ButtonToken> {
 
 function getOutlinedTokens(): Partial<ButtonToken> {
   return {
-    borderRadius: 8,
     defaultBg: "transparent",
     defaultColor: designSystemColors.neutral[800],
     defaultBorderColor: designSystemColors.neutral[300],
@@ -124,12 +117,27 @@ function getOutlinedTokens(): Partial<ButtonToken> {
 
 function getSizeTokens(dsSize?: DsSize): Partial<ButtonToken> {
   if (dsSize === "xs") {
-    return { fontSize: 10, controlHeight: 24 };
+    return {
+      fontSize: 10,
+      controlHeight: 24,
+      paddingInline: `${spacing[2]}px ${spacing[1]}px`,
+      borderRadius: radius.md,
+    };
   }
   if (dsSize === "s") {
-    return { fontSize: 13, controlHeight: 32 };
+    return {
+      fontSize: 13,
+      controlHeight: 32,
+      paddingInline: `${spacing[3]}px ${spacing[1]}px`,
+      borderRadius: radius.xl,
+    };
   }
-  return { fontSize: 13, controlHeight: 36 };
+  return {
+    fontSize: 13,
+    controlHeight: 36,
+    paddingInline: `${spacing[4]}px ${spacing[2]}px`,
+    borderRadius: radius.xl,
+  };
 }
 
 function mapToDsSize(size?: AntdButtonProps["size"]): DsSize {
@@ -139,48 +147,41 @@ function mapToDsSize(size?: AntdButtonProps["size"]): DsSize {
 }
 
 export function Button(props: ButtonProps): React.ReactElement {
-  const { type, dsSize, size, isIcon, ...rest } = props;
+  const { type, dsSize, size, ...rest } = props;
 
   const resolvedSize = size ? mapToDsSize(size) : dsSize;
   const sizeTokens = getSizeTokens(resolvedSize);
-  if (isIcon) {
-    sizeTokens.borderRadius = radius.xl;
-  }
 
-  const applyTheme = (
-    tokens: Partial<ButtonToken>,
-    antdType: AntdButtonType,
-    danger = false
-  ) => (
+  const applyTheme = (tokens: Partial<ButtonToken>) => (
     <ConfigProvider
       theme={{ components: { Button: { ...tokens, ...sizeTokens } } }}
     >
-      <AntdButton type={antdType} danger={danger} {...rest} />
+      <AntdButton type="default" {...rest} />
     </ConfigProvider>
   );
 
   if (type === "primary") {
-    return applyTheme(getPrimaryTokens(), "default");
+    return applyTheme(getPrimaryTokens());
   }
 
   if (type === "secondary") {
-    return applyTheme(getSecondaryTokens(), "default");
+    return applyTheme(getSecondaryTokens());
   }
 
   if (type === "ghost") {
-    return applyTheme(getGhostTokens(), "default");
+    return applyTheme(getGhostTokens());
   }
 
   if (type === "destructive") {
-    return applyTheme(getDestructiveTokens(), "primary", true);
+    return applyTheme(getDestructiveTokens());
   }
 
   if (type === "neutral") {
-    return applyTheme(getNeutralTokens(), "default");
+    return applyTheme(getNeutralTokens());
   }
 
   if (type === "outlined") {
-    return applyTheme(getOutlinedTokens(), "default");
+    return applyTheme(getOutlinedTokens());
   }
 
   // fallback: usa os tipos nativos do AntD, mantendo tokens de tamanho para consistência mínima
