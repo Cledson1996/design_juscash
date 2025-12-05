@@ -31,11 +31,13 @@ export interface ButtonProps
 
 function getPrimaryTokens(): Partial<ButtonToken> {
   return {
-    // usa tokens de primary do AntD para aplicar quando type='primary'
     colorPrimary: designSystemColors.brand.primary[600],
     colorPrimaryHover: designSystemColors.brand.primary[800],
     colorPrimaryActive: designSystemColors.brand.primary[800],
     colorTextLightSolid: designSystemColors.neutral[50],
+    colorBgContainerDisabled: designSystemColors.neutral[300],
+    colorTextDisabled: designSystemColors.neutral[400],
+    primaryShadow: undefined,
   };
 }
 
@@ -45,59 +47,73 @@ function getSecondaryTokens(): Partial<ButtonToken> {
     colorPrimaryHover: designSystemColors.brand.secondary[800],
     colorPrimaryActive: designSystemColors.brand.secondary[800],
     colorTextLightSolid: designSystemColors.neutral[50],
+
+    colorBgContainerDisabled: designSystemColors.neutral[300],
+    colorTextDisabled: designSystemColors.neutral[400],
+    primaryShadow: undefined,
   };
 }
 
-function getGhostTokens(): Partial<ButtonToken> {
+function getOutlinedTokens(): Partial<ButtonToken> {
   return {
-    defaultColor: designSystemColors.neutral[800],
-    defaultBorderColor: "transparent",
-    defaultBg: "transparent",
-    defaultHoverBorderColor: "transparent",
-    defaultActiveBorderColor: "transparent",
+    defaultColor: designSystemColors.neutral[50],
+    defaultBorderColor: designSystemColors.neutral[300],
+
+    colorText: designSystemColors.neutral[800],
     defaultActiveColor: designSystemColors.neutral[800],
+    textTextHoverColor: designSystemColors.neutral[800],
+    textTextActiveColor: designSystemColors.neutral[800],
     defaultHoverColor: designSystemColors.neutral[800],
+    textTextColor: designSystemColors.neutral[800],
+    defaultActiveBorderColor: designSystemColors.neutral[300],
+    defaultHoverBorderColor: designSystemColors.neutral[300],
+
     defaultHoverBg: designSystemColors.neutral[100],
     defaultActiveBg: designSystemColors.neutral[100],
+
     colorTextDisabled: designSystemColors.neutral[400],
-    colorText: designSystemColors.neutral[800],
-    colorTextBase: designSystemColors.neutral[800],
+    colorBgContainerDisabled: designSystemColors.neutral[50],
+    colorBorderDisabled: designSystemColors.neutral[200],
+
+    defaultBgDisabled: designSystemColors.neutral[50],
+
+    primaryShadow: undefined,
+  };
+}
+function getGhostTokens(): Partial<ButtonToken> {
+  return {
+    colorPrimary: designSystemColors.neutral[50],
+    colorPrimaryBorder: "transparent",
+    colorTextLightSolid: designSystemColors.neutral[800],
+    colorPrimaryBorderHover: "transparent",
+    colorPrimaryActive: designSystemColors.neutral[100],
+    colorPrimaryHover: designSystemColors.neutral[100],
+    colorTextDisabled: designSystemColors.neutral[400],
+    primaryShadow: undefined,
   };
 }
 
 function getDestructiveTokens(): Partial<ButtonToken> {
   return {
     colorPrimary: designSystemColors.feedback.red[500],
+    colorPrimaryBorder: "transparent",
+    primaryShadow: undefined,
+    colorTextLightSolid: designSystemColors.neutral[50],
+
     colorPrimaryHover: designSystemColors.feedback.red[900],
     colorPrimaryActive: designSystemColors.feedback.red[900],
-    colorTextLightSolid: designSystemColors.neutral[50],
+
+    colorBgContainerDisabled: designSystemColors.neutral[300],
+    colorTextDisabled: designSystemColors.neutral[400],
   };
 }
 
 function getNeutralTokens(): Partial<ButtonToken> {
   return {
-    defaultBg: designSystemColors.neutral[200],
-    defaultColor: designSystemColors.neutral[800],
-    defaultBorderColor: designSystemColors.neutral[300],
-    defaultHoverBorderColor: designSystemColors.neutral[300],
-    defaultHoverBg: designSystemColors.neutral[400],
-    defaultActiveBg: designSystemColors.neutral[400],
-    defaultHoverColor: designSystemColors.neutral[800],
-    defaultActiveColor: designSystemColors.neutral[800],
-    colorTextDisabled: designSystemColors.neutral[400],
-    colorBgContainerDisabled: designSystemColors.neutral[300],
-  };
-}
-
-function getOutlinedTokens(): Partial<ButtonToken> {
-  return {
-    defaultBg: "transparent",
-    defaultColor: designSystemColors.neutral[800],
-    defaultBorderColor: designSystemColors.neutral[300],
-    defaultHoverBorderColor: designSystemColors.neutral[400],
-    defaultHoverColor: designSystemColors.neutral[800],
-    defaultHoverBg: designSystemColors.neutral[100],
-    defaultActiveBg: designSystemColors.neutral[100],
+    colorPrimary: designSystemColors.neutral[200],
+    colorPrimaryHover: designSystemColors.neutral[400],
+    colorPrimaryActive: designSystemColors.neutral[400],
+    colorTextLightSolid: designSystemColors.neutral[800],
     colorTextDisabled: designSystemColors.neutral[400],
     colorBgContainerDisabled: designSystemColors.neutral[300],
   };
@@ -135,13 +151,11 @@ function mapToDsSize(size?: AntdButtonProps["size"]): DsSize {
 }
 
 export function Button(props: ButtonProps): React.ReactElement {
-  const { type, dsSize, size, style, ...rest } = props;
+  const { type, dsSize = "m", size, style, ...rest } = props;
 
   const resolvedSize = size ? mapToDsSize(size) : dsSize;
   const sizeTokens = getSizeTokens(resolvedSize);
 
-  // Calcula paddingBlock baseado no tamanho para aplicar via style inline
-  // Sobrescreve o `padding: 0px var(--ant-button-padding-inline)` que o AntD gera
   const paddingBlockValue =
     resolvedSize === "xs"
       ? spacing[1]
@@ -185,7 +199,7 @@ export function Button(props: ButtonProps): React.ReactElement {
   }
 
   if (type === "ghost") {
-    return applyTheme(getGhostTokens(), "default");
+    return applyTheme(getGhostTokens(), "primary");
   }
 
   if (type === "destructive") {
@@ -193,14 +207,13 @@ export function Button(props: ButtonProps): React.ReactElement {
   }
 
   if (type === "neutral") {
-    return applyTheme(getNeutralTokens(), "default");
+    return applyTheme(getNeutralTokens(), "primary");
   }
 
   if (type === "outlined") {
     return applyTheme(getOutlinedTokens(), "default");
   }
 
-  // fallback: usa os tipos nativos do AntD, mantendo tokens de tamanho para consistência mínima
   if (resolvedSize) {
     return (
       <ConfigProvider theme={{ components: { Button: { ...sizeTokens } } }}>

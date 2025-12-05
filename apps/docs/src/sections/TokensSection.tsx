@@ -1,19 +1,17 @@
 import React from "react";
-import { Typography, Space, Card } from "@Juscash/design-system";
-
-const { Title, Paragraph } = Typography;
+import { Heading2, Body1, Body2, Space, Card } from "@Juscash/design-system";
 
 export const TokensSection: React.FC = () => (
   <Space direction="vertical" size={16} style={{ width: "100%" }}>
-    <Title level={2}>Design Tokens</Title>
-    <Paragraph>
+    <Heading2>Design Tokens</Heading2>
+    <Body1>
       Em breve: documentação com cores, espaçamentos, radius, sombras e
       breakpoints. Enquanto isso, utilize os exports do pacote:
       <code>designSystemColors</code>, <code>spacing</code>,{" "}
       <code>radius</code>, <code>breakpoints</code> e <code>shadow</code>.
-    </Paragraph>
+    </Body1>
     <Card>
-      <Paragraph>
+      <Body2>
         Exemplo de import:
         <pre
           style={{
@@ -29,7 +27,7 @@ export const TokensSection: React.FC = () => (
   radius,
   breakpoints
 } from '@Juscash/design-system';`}</pre>
-      </Paragraph>
+      </Body2>
     </Card>
   </Space>
 );

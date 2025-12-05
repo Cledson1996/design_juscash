@@ -1,15 +1,9 @@
 import React from "react";
-import {
-  Layout,
-  Menu,
-  Typography,
-  type MenuProps
-} from "@Juscash/design-system";
+import { Layout, Menu, Body2, type MenuProps } from "@Juscash/design-system";
 import { logoSrc } from "../utils/logo";
 import type { SectionKey } from "../types/navigation";
 
 const { Sider } = Layout;
-const { Text } = Typography;
 
 const menuItems: MenuProps["items"] = [
   { key: "components", label: "Componentes" },
@@ -36,7 +30,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       }}
     >
       <img src={logoSrc} alt="Juscash" style={{ width: 36 }} />
-      <Text style={{ color: "#fff", fontWeight: 600 }}>Juscash DS</Text>
+      <Body2 style={{ color: "#fff", fontWeight: 600 }}>Juscash DS</Body2>
     </div>
     <Menu
       items={menuItems}

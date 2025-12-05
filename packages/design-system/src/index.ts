@@ -11,7 +11,6 @@ export {
   Modal,
   Layout,
   Menu,
-  Typography,
   Card,
   Divider,
   Space,

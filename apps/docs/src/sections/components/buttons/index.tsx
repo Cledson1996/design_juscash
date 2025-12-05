@@ -4,12 +4,13 @@ import {
   Card,
   Divider,
   Space,
-  Typography,
+  Heading2,
+  Heading4,
+  Body1,
+  Body2,
   LucideIcons,
 } from "@Juscash/design-system";
 import { ButtonPlayground } from "./ButtonPlayground";
-
-const { Title, Paragraph, Text } = Typography;
 
 type ButtonVariant = NonNullable<React.ComponentProps<typeof Button>["type"]>;
 const buttonVariants: ButtonVariant[] = [
@@ -55,12 +56,12 @@ const DemoCard: React.FC<DemoCardProps> = ({
       }
     >
       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-        <Paragraph>{description}</Paragraph>
+        <Body1>{description}</Body1>
         {renderButtons ? (
           <>
             {renderButtons()}
             <Divider plain>
-              <Text strong>Exemplo interativo</Text>
+              <Body2 style={{ fontWeight: 600 }}>Exemplo interativo</Body2>
             </Divider>
           </>
         ) : null}
@@ -207,11 +208,11 @@ const StatesDemo = () => (
 
 export const ButtonsShowcase: React.FC = () => (
   <Space direction="vertical" size={24} style={{ width: "100%" }}>
-    <Title level={2}>Button</Title>
-    <Paragraph>
+    <Heading2>Button</Heading2>
+    <Body1>
       Botões do design system com tipos, tamanhos, ícones e estados
       personalizados.
-    </Paragraph>
+    </Body1>
     <TypesDemo />
     <SizesDemo />
     <IconsDemo />
