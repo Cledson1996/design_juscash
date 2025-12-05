@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { JuscashProvider } from "@Juscash/design-system";
 import { MainLayout } from "./layouts/MainLayout";
 import { ComponentsSection } from "./sections/ComponentsSection";
+import { TypographySection } from "./sections/components/typography";
 import { TokensSection } from "./sections/TokensSection";
 import { AboutSection } from "./sections/AboutSection";
 import type { SectionKey, ComponentKey } from "./types/navigation";
@@ -20,6 +21,8 @@ export const App: React.FC = () => {
             onSelect={setSelectedComponent}
           />
         );
+      case "typography":
+        return <TypographySection />;
       case "tokens":
         return <TokensSection />;
       case "about":

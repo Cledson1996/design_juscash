@@ -7,6 +7,7 @@ const { Sider } = Layout;
 
 const menuItems: MenuProps["items"] = [
   { key: "components", label: "Componentes" },
+  { key: "typography", label: "Typography" },
   { key: "tokens", label: "Design Tokens" },
   { key: "about", label: "Sobre" }
 ];
