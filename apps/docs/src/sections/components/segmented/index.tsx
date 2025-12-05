@@ -130,7 +130,11 @@ export const SegmentedShowcase: React.FC = () => (
           <Segmented
             size="middle"
             options={[
-              { label: "Label", value: "label", icon: <LucideIcons.Heart /> },
+              {
+                label: "Label",
+                value: "label",
+                icon: <LucideIcons.Heart size={13} />,
+              },
               { label: "Label", value: "label2" },
               { label: "Label", value: "label3" },
               { label: "Label", value: "label4" },
@@ -139,7 +143,11 @@ export const SegmentedShowcase: React.FC = () => (
           <Segmented
             size="large"
             options={[
-              { label: "Label", value: "l1", icon: <LucideIcons.Heart /> },
+              {
+                label: "Label",
+                value: "l1",
+                icon: <LucideIcons.Heart size={13} />,
+              },
               { label: "Label", value: "l2" },
               { label: "Label", value: "l3" },
               { label: "Label", value: "l4" },
@@ -148,7 +156,11 @@ export const SegmentedShowcase: React.FC = () => (
           <Segmented
             size="small"
             options={[
-              { label: "Label", value: "s1", icon: <LucideIcons.Heart /> },
+              {
+                label: "Label",
+                value: "s1",
+                icon: <LucideIcons.Heart size={10} />,
+              },
               { label: "Label", value: "s2" },
               { label: "Label", value: "s3" },
               { label: "Label", value: "s4" },
@@ -167,11 +179,11 @@ export const SegmentedShowcase: React.FC = () => (
           <Segmented options={["Map", "Transit", "Satellite"]} disabled />
           <Segmented
             options={[
-              "Daily",
+              { label: "Daily", value: "Daily" },
               { label: "Weekly", value: "Weekly", disabled: true },
-              "Monthly",
+              { label: "Monthly", value: "Monthly" },
               { label: "Quarterly", value: "Quarterly", disabled: true },
-              "Yearly",
+              { label: "Yearly", value: "Yearly" },
             ]}
           />
         </Space>
@@ -186,12 +198,20 @@ export const SegmentedShowcase: React.FC = () => (
         <Segmented
           size="regular"
           options={[
-            { label: "Favoritos", value: "fav", icon: <LucideIcons.Heart /> },
-            { label: "Sino", value: "bell", icon: <LucideIcons.Bell /> },
+            {
+              label: "Favoritos",
+              value: "fav",
+              icon: <LucideIcons.Heart size={13} />,
+            },
+            {
+              label: "Sino",
+              value: "bell",
+              icon: <LucideIcons.Bell size={13} />,
+            },
             {
               label: "Config",
               value: "settings",
-              icon: <LucideIcons.Settings />,
+              icon: <LucideIcons.Settings size={13} />,
             },
           ]}
         />
