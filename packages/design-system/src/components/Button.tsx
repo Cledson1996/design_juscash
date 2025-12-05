@@ -31,31 +31,20 @@ export interface ButtonProps
 
 function getPrimaryTokens(): Partial<ButtonToken> {
   return {
-    defaultBg: designSystemColors.brand.primary[600],
-    defaultColor: designSystemColors.neutral[50],
-    defaultHoverColor: designSystemColors.neutral[50],
-    defaultHoverBg: designSystemColors.brand.primary[800],
-    defaultActiveBg: designSystemColors.brand.primary[800],
-    defaultActiveColor: designSystemColors.neutral[50],
-    defaultBorderColor: "transparent",
-    defaultHoverBorderColor: "transparent",
-    colorTextDisabled: designSystemColors.neutral[400],
-    colorBgContainerDisabled: designSystemColors.neutral[300],
+    // usa tokens de primary do AntD para aplicar quando type='primary'
+    colorPrimary: designSystemColors.brand.primary[600],
+    colorPrimaryHover: designSystemColors.brand.primary[800],
+    colorPrimaryActive: designSystemColors.brand.primary[800],
+    colorTextLightSolid: designSystemColors.neutral[50],
   };
 }
 
 function getSecondaryTokens(): Partial<ButtonToken> {
   return {
-    defaultBg: designSystemColors.brand.secondary[700],
-    defaultColor: designSystemColors.neutral[50],
-    defaultActiveColor: designSystemColors.neutral[50],
-    defaultHoverColor: designSystemColors.neutral[50],
-    defaultHoverBg: designSystemColors.brand.secondary[800],
-    defaultActiveBg: designSystemColors.brand.secondary[800],
-    defaultBorderColor: "transparent",
-    defaultHoverBorderColor: "transparent",
-    colorTextDisabled: designSystemColors.neutral[400],
-    colorBgContainerDisabled: designSystemColors.neutral[300],
+    colorPrimary: designSystemColors.brand.secondary[700],
+    colorPrimaryHover: designSystemColors.brand.secondary[800],
+    colorPrimaryActive: designSystemColors.brand.secondary[800],
+    colorTextLightSolid: designSystemColors.neutral[50],
   };
 }
 
@@ -78,11 +67,10 @@ function getGhostTokens(): Partial<ButtonToken> {
 
 function getDestructiveTokens(): Partial<ButtonToken> {
   return {
-    colorError: designSystemColors.feedback.red[500],
-    colorErrorHover: designSystemColors.feedback.red[900],
-    colorErrorActive: designSystemColors.feedback.red[900],
-    colorTextDisabled: designSystemColors.neutral[400],
-    colorBgContainerDisabled: designSystemColors.neutral[300],
+    colorPrimary: designSystemColors.feedback.red[500],
+    colorPrimaryHover: designSystemColors.feedback.red[900],
+    colorPrimaryActive: designSystemColors.feedback.red[900],
+    colorTextLightSolid: designSystemColors.neutral[50],
   };
 }
 
@@ -120,7 +108,7 @@ function getSizeTokens(dsSize?: DsSize): Partial<ButtonToken> {
     return {
       fontSize: 10,
       controlHeight: 24,
-      paddingInline: `${spacing[2]}px ${spacing[1]}px`,
+      paddingInline: spacing[2],
       borderRadius: radius.md,
     };
   }
@@ -128,14 +116,14 @@ function getSizeTokens(dsSize?: DsSize): Partial<ButtonToken> {
     return {
       fontSize: 13,
       controlHeight: 32,
-      paddingInline: `${spacing[3]}px ${spacing[1]}px`,
+      paddingInline: spacing[3],
       borderRadius: radius.xl,
     };
   }
   return {
     fontSize: 13,
     controlHeight: 36,
-    paddingInline: `${spacing[4]}px ${spacing[2]}px`,
+    paddingInline: spacing[4],
     borderRadius: radius.xl,
   };
 }
@@ -147,51 +135,91 @@ function mapToDsSize(size?: AntdButtonProps["size"]): DsSize {
 }
 
 export function Button(props: ButtonProps): React.ReactElement {
-  const { type, dsSize, size, ...rest } = props;
+  const { type, dsSize, size, style, ...rest } = props;
 
   const resolvedSize = size ? mapToDsSize(size) : dsSize;
   const sizeTokens = getSizeTokens(resolvedSize);
 
-  const applyTheme = (tokens: Partial<ButtonToken>) => (
+  // Calcula paddingBlock baseado no tamanho para aplicar via style inline
+  // Sobrescreve o `padding: 0px var(--ant-button-padding-inline)` que o AntD gera
+  const paddingBlockValue =
+    resolvedSize === "xs"
+      ? spacing[1]
+      : resolvedSize === "s"
+      ? spacing[1]
+      : resolvedSize === "m"
+      ? spacing[2]
+      : undefined;
+
+  const applyTheme = (
+    tokens: Partial<ButtonToken>,
+    antdType: AntdButtonType
+  ) => (
     <ConfigProvider
-      theme={{ components: { Button: { ...tokens, ...sizeTokens } } }}
+      theme={{
+        components: { Button: { algorithm: true, ...tokens, ...sizeTokens } },
+      }}
     >
-      <AntdButton type="default" {...rest} />
+      <AntdButton
+        type={antdType}
+        style={
+          paddingBlockValue !== undefined
+            ? {
+                paddingTop: `${paddingBlockValue}px`,
+                paddingBottom: `${paddingBlockValue}px`,
+                ...style,
+              }
+            : style
+        }
+        {...rest}
+      />
     </ConfigProvider>
   );
 
   if (type === "primary") {
-    return applyTheme(getPrimaryTokens());
+    return applyTheme(getPrimaryTokens(), "primary");
   }
 
   if (type === "secondary") {
-    return applyTheme(getSecondaryTokens());
+    return applyTheme(getSecondaryTokens(), "primary");
   }
 
   if (type === "ghost") {
-    return applyTheme(getGhostTokens());
+    return applyTheme(getGhostTokens(), "default");
   }
 
   if (type === "destructive") {
-    return applyTheme(getDestructiveTokens());
+    return applyTheme(getDestructiveTokens(), "primary");
   }
 
   if (type === "neutral") {
-    return applyTheme(getNeutralTokens());
+    return applyTheme(getNeutralTokens(), "default");
   }
 
   if (type === "outlined") {
-    return applyTheme(getOutlinedTokens());
+    return applyTheme(getOutlinedTokens(), "default");
   }
 
   // fallback: usa os tipos nativos do AntD, mantendo tokens de tamanho para consistência mínima
   if (resolvedSize) {
     return (
       <ConfigProvider theme={{ components: { Button: { ...sizeTokens } } }}>
-        <AntdButton type={type as AntdButtonType} {...rest} />
+        <AntdButton
+          type="default"
+          style={
+            paddingBlockValue !== undefined
+              ? {
+                  paddingTop: `${paddingBlockValue}px`,
+                  paddingBottom: `${paddingBlockValue}px`,
+                  ...style,
+                }
+              : style
+          }
+          {...rest}
+        />
       </ConfigProvider>
     );
   }
 
-  return <AntdButton type={type as AntdButtonType} {...rest} />;
+  return <AntdButton type="default" style={style} {...rest} />;
 }
