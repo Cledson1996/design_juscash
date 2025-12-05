@@ -3,7 +3,8 @@
 import React from "react";
 import { ConfigProvider, Segmented as AntdSegmented } from "antd";
 import type { SegmentedProps as AntdSegmentedProps } from "antd";
-import { designSystemColors } from "../theme";
+import { designSystemColors, spacing, radius } from "../theme";
+import type { ThemeConfig } from "antd";
 import type { ComponentToken } from "antd/es/segmented/style/index";
 
 type SegmentedSize = "small" | "regular" | "large" | "middle";
@@ -25,6 +26,7 @@ function resolveSize(
 }
 
 const segmentedTokens: Partial<ComponentToken> = {
+  trackPadding: spacing[1],
   trackBg: designSystemColors.neutral[200],
   itemColor: designSystemColors.neutral[800],
   itemHoverColor: designSystemColors.neutral[800],
@@ -32,6 +34,15 @@ const segmentedTokens: Partial<ComponentToken> = {
   itemActiveBg: designSystemColors.neutral[200],
   itemSelectedBg: designSystemColors.neutral[50],
   itemSelectedColor: designSystemColors.neutral[800],
+};
+
+const token: Partial<ThemeConfig["token"]> = {
+  controlHeight: 32,
+  controlHeightSM: 24,
+  controlHeightLG: 36,
+  borderRadius: radius.xl,
+  borderRadiusSM: radius.xl,
+  borderRadiusLG: radius["2xl"],
 };
 
 export function Segmented<T extends string | number = string>(
@@ -43,6 +54,7 @@ export function Segmented<T extends string | number = string>(
   return (
     <ConfigProvider
       theme={{
+        token,
         components: {
           Segmented: segmentedTokens,
         },

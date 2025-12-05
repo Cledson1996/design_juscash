@@ -11,6 +11,7 @@ import {
 import type { ComponentKey } from "../types/navigation";
 import { ButtonsShowcase } from "./components/buttons";
 import { TypographySection } from "./components/typography";
+import { SegmentedShowcase } from "./components/segmented";
 
 export interface ComponentsSectionProps {
   selectedComponent: ComponentKey | null;
@@ -43,6 +44,17 @@ export const ComponentsSection: React.FC<ComponentsSectionProps> = ({
     );
   }
 
+  if (selectedComponent === "segmented") {
+    return (
+      <Space direction="vertical" size={16} style={{ width: "100%" }}>
+        <Button type="secondary" onClick={() => onSelect(null)}>
+          ← Voltar
+        </Button>
+        <SegmentedShowcase />
+      </Space>
+    );
+  }
+
   return (
     <Space direction="vertical" size={24} style={{ width: "100%" }}>
       <div>
@@ -71,6 +83,16 @@ export const ComponentsSection: React.FC<ComponentsSectionProps> = ({
           <Heading4>Typography</Heading4>
           <Body2 style={{ color: "rgba(0,0,0,0.6)" }}>
             Hierarquia de títulos, textos e legendas padronizados.
+          </Body2>
+        </Card>
+        <Card
+          hoverable
+          style={{ width: 280 }}
+          onClick={() => onSelect("segmented")}
+        >
+          <Heading4>Segmented</Heading4>
+          <Body2 style={{ color: "rgba(0,0,0,0.6)" }}>
+            Seletores segmentados com tamanhos e ícones.
           </Body2>
         </Card>
       </Space>
