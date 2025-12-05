@@ -12,6 +12,7 @@ import type { ComponentKey } from "../types/navigation";
 import { ButtonsShowcase } from "./components/buttons";
 import { TypographySection } from "./components/typography";
 import { SegmentedShowcase } from "./components/segmented";
+import { CheckboxShowcase } from "./components/checkbox";
 
 export interface ComponentsSectionProps {
   selectedComponent: ComponentKey | null;
@@ -55,6 +56,17 @@ export const ComponentsSection: React.FC<ComponentsSectionProps> = ({
     );
   }
 
+  if (selectedComponent === "checkbox") {
+    return (
+      <Space direction="vertical" size={16} style={{ width: "100%" }}>
+        <Button type="secondary" onClick={() => onSelect(null)}>
+          ← Voltar
+        </Button>
+        <CheckboxShowcase />
+      </Space>
+    );
+  }
+
   return (
     <Space direction="vertical" size={24} style={{ width: "100%" }}>
       <div>
@@ -93,6 +105,16 @@ export const ComponentsSection: React.FC<ComponentsSectionProps> = ({
           <Heading4>Segmented</Heading4>
           <Body2 style={{ color: "rgba(0,0,0,0.6)" }}>
             Seletores segmentados com tamanhos e ícones.
+          </Body2>
+        </Card>
+        <Card
+          hoverable
+          style={{ width: 280 }}
+          onClick={() => onSelect("checkbox")}
+        >
+          <Heading4>Checkbox</Heading4>
+          <Body2 style={{ color: "rgba(0,0,0,0.6)" }}>
+            Caixa de seleção padrão com estados checked e unchecked.
           </Body2>
         </Card>
       </Space>

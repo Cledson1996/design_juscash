@@ -1,2 +1,2 @@
 export type SectionKey = "components" | "typography" | "tokens" | "about";
-export type ComponentKey = "button" | "typography" | "segmented";
+export type ComponentKey = "button" | "typography" | "segmented" | "checkbox";
