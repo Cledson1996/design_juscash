@@ -4,4 +4,5 @@ export type ComponentKey =
   | "typography"
   | "segmented"
   | "checkbox"
-  | "radio";
+  | "radio"
+  | "switch";

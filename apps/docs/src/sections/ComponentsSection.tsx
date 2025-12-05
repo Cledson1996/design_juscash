@@ -14,6 +14,7 @@ import { TypographySection } from "./components/typography";
 import { SegmentedShowcase } from "./components/segmented";
 import { CheckboxShowcase } from "./components/checkbox";
 import { RadioShowcase } from "./components/radio";
+import { SwitchShowcase } from "./components/switch";
 
 export interface ComponentsSectionProps {
   selectedComponent: ComponentKey | null;
@@ -79,6 +80,17 @@ export const ComponentsSection: React.FC<ComponentsSectionProps> = ({
     );
   }
 
+  if (selectedComponent === "switch") {
+    return (
+      <Space direction="vertical" size={16} style={{ width: "100%" }}>
+        <Button type="secondary" onClick={() => onSelect(null)}>
+          ← Voltar
+        </Button>
+        <SwitchShowcase />
+      </Space>
+    );
+  }
+
   return (
     <Space direction="vertical" size={24} style={{ width: "100%" }}>
       <div>
@@ -137,6 +149,16 @@ export const ComponentsSection: React.FC<ComponentsSectionProps> = ({
           <Heading4>Radio</Heading4>
           <Body2 style={{ color: "rgba(0,0,0,0.6)" }}>
             Seleção única com estados básico, desabilitado, erro e grupo.
+          </Body2>
+        </Card>
+        <Card
+          hoverable
+          style={{ width: 280 }}
+          onClick={() => onSelect("switch")}
+        >
+          <Heading4>Switch</Heading4>
+          <Body2 style={{ color: "rgba(0,0,0,0.6)" }}>
+            Interruptor on/off com estados normal, erro e desabilitado.
           </Body2>
         </Card>
       </Space>

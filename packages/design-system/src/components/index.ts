@@ -3,3 +3,4 @@ export * from "./Typography";
 export * from "./Segmented";
 export * from "./Checkbox";
 export * from "./Radio";
+export * from "./Switch";
