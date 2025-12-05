@@ -1,12 +1,19 @@
-export * from './theme';
-export * from './components';
+export * from "./theme";
+export * from "./components";
 
 export {
   ConfigProvider,
   theme,
   type ThemeConfig,
   Button as AntButton,
-  Modal
-} from 'antd';
+  Modal,
+  Layout,
+  Menu,
+  Typography,
+  Card,
+  Divider,
+  Space,
+  type MenuProps,
+} from "antd";
 
-
+export * as LucideIcons from "lucide-react";
