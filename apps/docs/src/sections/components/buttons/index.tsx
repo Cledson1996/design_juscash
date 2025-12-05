@@ -7,6 +7,7 @@ import {
   Typography,
   LucideIcons,
 } from "@Juscash/design-system";
+import { ButtonPlayground } from "./ButtonPlayground";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -31,51 +32,39 @@ const buttonSizes: NonNullable<
 interface DemoCardProps {
   title: string;
   description: string;
-  renderButtons: () => React.ReactNode;
-  usageText: string;
-  codeExample: string;
+  code: string;
+  renderButtons?: () => React.ReactNode;
 }
 
 const DemoCard: React.FC<DemoCardProps> = ({
   title,
   description,
   renderButtons,
-  usageText,
-  codeExample,
+  code,
 }) => {
-  const [showCode, setShowCode] = useState(false);
+  const [showPlayground, setShowPlayground] = useState(false);
 
   return (
     <Card
       title={title}
+      style={{ width: "100%" }}
       extra={
-        <Button type="link" onClick={() => setShowCode((prev) => !prev)}>
-          {showCode ? "Ocultar exemplo" : "Exemplo de uso"}
+        <Button type="link" onClick={() => setShowPlayground((prev) => !prev)}>
+          {showPlayground ? "Ocultar exemplo" : "Exemplo interativo"}
         </Button>
       }
-      style={{ width: "100%" }}
     >
       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
         <Paragraph>{description}</Paragraph>
-        {renderButtons()}
-        <Divider plain>
-          <Text strong>Utilização</Text>
-        </Divider>
-        <Paragraph>{usageText}</Paragraph>
-        {showCode && (
-          <pre
-            style={{
-              background: "#f5f5f5",
-              padding: 16,
-              borderRadius: 8,
-              overflowX: "auto",
-              fontSize: 12,
-              width: "100%",
-            }}
-          >
-            {codeExample}
-          </pre>
-        )}
+        {renderButtons ? (
+          <>
+            {renderButtons()}
+            <Divider plain>
+              <Text strong>Exemplo interativo</Text>
+            </Divider>
+          </>
+        ) : null}
+        {showPlayground ? <ButtonPlayground code={code} /> : null}
       </Space>
     </Card>
   );
@@ -104,8 +93,7 @@ const TypesDemo = () => (
   <DemoCard
     title="Todos os tipos"
     description="Variedade de tipos suportados pelo Button."
-    usageText="Passe a prop type com os valores: primary, secondary, neutral, outlined, ghost, destructive, default, dashed, link ou text."
-    codeExample={typesCode}
+    code={typesCode}
     renderButtons={() => (
       <Space size="small" wrap>
         {buttonVariants.map((variant) => (
@@ -134,8 +122,7 @@ const SizesDemo = () => (
   <DemoCard
     title="Tamanhos"
     description="Exemplo com o tipo primary nos tamanhos XS, S e M."
-    usageText="Use a prop dsSize com os valores xs, s ou m."
-    codeExample={sizesCode}
+    code={sizesCode}
     renderButtons={() => (
       <Space size="small" wrap>
         {buttonSizes.map((size) => (
@@ -168,8 +155,7 @@ const IconsDemo = () => (
   <DemoCard
     title="Com ícones"
     description="Botões com ícones do pacote Lucide (reexportado pelo design system)."
-    usageText="Use o slot children para renderizar ícones, ex.: <LucideIcons.Star />."
-    codeExample={iconsCode}
+    code={iconsCode}
     renderButtons={() => (
       <Space size="small" wrap>
         {["Star", "Bell", "Settings"].map((icon) => {
@@ -204,8 +190,7 @@ const StatesDemo = () => (
   <DemoCard
     title="Estados"
     description="Demonstração de estados comuns (loading, disabled, etc.)."
-    usageText="Use as props loading, disabled ou outras props nativas do Ant Design."
-    codeExample={statesCode}
+    code={statesCode}
     renderButtons={() => (
       <Space size="small" wrap>
         <Button type="primary" loading>
