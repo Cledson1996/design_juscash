@@ -1,4 +1,1 @@
-export * from './JcButton';
-export * from './Button';
-
-
+export * from "./Button";

@@ -1,3 +1,5 @@
+import "./theme/global.css";
+
 export * from "./theme";
 export * from "./components";
 

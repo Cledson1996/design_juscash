@@ -1,16 +1,10 @@
 import React, { useState } from "react";
-import { JuscashProvider, type ThemeConfig } from "@Juscash/design-system";
+import { JuscashProvider } from "@Juscash/design-system";
 import { MainLayout } from "./layouts/MainLayout";
 import { ComponentsSection } from "./sections/ComponentsSection";
 import { TokensSection } from "./sections/TokensSection";
 import { AboutSection } from "./sections/AboutSection";
 import type { SectionKey, ComponentKey } from "./types/navigation";
-
-const customTheme: ThemeConfig = {
-  token: {
-    colorPrimary: "#0f172a",
-  },
-};
 
 export const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState<SectionKey>("components");
@@ -41,7 +35,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <JuscashProvider themeOverride={customTheme}>
+    <JuscashProvider>
       <MainLayout
         activeSection={activeSection}
         onChangeSection={handleSectionChange}

@@ -1,0 +1,4 @@
+:root {
+  /* Fallback caso o consumidor não defina a fonte */
+  --font-primary: 'Inter', sans-serif;
+}

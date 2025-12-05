@@ -5,14 +5,12 @@ import {
   Divider,
   Space,
   Typography,
-  LucideIcons
+  LucideIcons,
 } from "@Juscash/design-system";
 
 const { Title, Paragraph, Text } = Typography;
 
-type ButtonVariant = NonNullable<
-  React.ComponentProps<typeof Button>["type"]
->;
+type ButtonVariant = NonNullable<React.ComponentProps<typeof Button>["type"]>;
 const buttonVariants: ButtonVariant[] = [
   "primary",
   "secondary",
@@ -23,7 +21,7 @@ const buttonVariants: ButtonVariant[] = [
   "default",
   "dashed",
   "link",
-  "text"
+  "text",
 ];
 
 const buttonSizes: NonNullable<
@@ -35,13 +33,15 @@ interface DemoCardProps {
   description: string;
   renderButtons: () => React.ReactNode;
   usageText: string;
+  codeExample: string;
 }
 
 const DemoCard: React.FC<DemoCardProps> = ({
   title,
   description,
   renderButtons,
-  usageText
+  usageText,
+  codeExample,
 }) => {
   const [showCode, setShowCode] = useState(false);
 
@@ -70,30 +70,42 @@ const DemoCard: React.FC<DemoCardProps> = ({
               borderRadius: 8,
               overflowX: "auto",
               fontSize: 12,
-              width: "100%"
+              width: "100%",
             }}
-          >{`import { Button } from '@Juscash/design-system';\n\nfunction Example() {\n  return (\n${renderButtonsCode(renderButtons)}\n  );\n}`}</pre>
+          >
+            {codeExample}
+          </pre>
         )}
       </Space>
     </Card>
   );
 };
 
-const renderButtonsCode = (renderer: () => React.ReactNode) => {
-  const match = renderer.toString().match(/return\s*\(([\s\S]*)\)/);
-  if (!match) return "    <>...</>";
-  return match[1]
-    .split("\n")
-    .map((line) => `    ${line.trimEnd()}`)
-    .join("\n")
-    .trim();
-};
+const typesCode = `import { Button, Space } from '@Juscash/design-system';
+
+export function ButtonTypes() {
+  return (
+    <Space wrap>
+      <Button type="primary">Primary</Button>
+      <Button type="secondary">Secondary</Button>
+      <Button type="neutral">Neutral</Button>
+      <Button type="outlined">Outlined</Button>
+      <Button type="ghost">Ghost</Button>
+      <Button type="destructive">Destructive</Button>
+      <Button type="default">Default</Button>
+      <Button type="dashed">Dashed</Button>
+      <Button type="link">Link</Button>
+      <Button type="text">Text</Button>
+    </Space>
+  );
+}`;
 
 const TypesDemo = () => (
   <DemoCard
     title="Todos os tipos"
     description="Variedade de tipos suportados pelo Button."
     usageText="Passe a prop type com os valores: primary, secondary, neutral, outlined, ghost, destructive, default, dashed, link ou text."
+    codeExample={typesCode}
     renderButtons={() => (
       <Space size="small" wrap>
         {buttonVariants.map((variant) => (
@@ -106,11 +118,24 @@ const TypesDemo = () => (
   />
 );
 
+const sizesCode = `import { Button, Space } from '@Juscash/design-system';
+
+export function ButtonSizes() {
+  return (
+    <Space wrap>
+      <Button type="primary" dsSize="xs">Primary xs</Button>
+      <Button type="primary" dsSize="s">Primary s</Button>
+      <Button type="primary" dsSize="m">Primary m</Button>
+    </Space>
+  );
+}`;
+
 const SizesDemo = () => (
   <DemoCard
     title="Tamanhos"
     description="Exemplo com o tipo primary nos tamanhos XS, S e M."
     usageText="Use a prop dsSize com os valores xs, s ou m."
+    codeExample={sizesCode}
     renderButtons={() => (
       <Space size="small" wrap>
         {buttonSizes.map((size) => (
@@ -123,22 +148,39 @@ const SizesDemo = () => (
   />
 );
 
+const iconsCode = `import { Button, Space, LucideIcons } from '@Juscash/design-system';
+
+export function ButtonIcons() {
+  const icons = [{icon: LucideIcons.Star, label: "Star"}, {icon: LucideIcons.Bell, label: "Bell"}, {icon: LucideIcons.Settings, label: "Settings"}];
+
+  return (
+    <Space wrap>
+      {icons.map((Icon, index) => (
+        <Button key={index} type="secondary" dsSize="s" icon={<Icon.icon size={16} />}>
+          {Icon.label}
+        </Button>
+      ))}
+    </Space>
+  );
+}`;
+
 const IconsDemo = () => (
   <DemoCard
     title="Com ícones"
     description="Botões com ícones do pacote Lucide (reexportado pelo design system)."
     usageText="Use o slot children para renderizar ícones, ex.: <LucideIcons.Star />."
+    codeExample={iconsCode}
     renderButtons={() => (
       <Space size="small" wrap>
         {["Star", "Bell", "Settings"].map((icon) => {
           const Icon = (LucideIcons as any)[icon];
           return (
-            <Button key={icon} type="secondary" dsSize="s">
-              <Space size={4}>
-                <Icon size={16} />
-                {icon}
-              </Space>
-            </Button>
+            <Button
+              key={icon}
+              type="secondary"
+              dsSize="s"
+              icon={<Icon size={16} />}
+            />
           );
         })}
       </Space>
@@ -146,11 +188,24 @@ const IconsDemo = () => (
   />
 );
 
+const statesCode = `import { Button, Space } from '@Juscash/design-system';
+
+export function ButtonStates() {
+  return (
+    <Space wrap>
+      <Button type="primary" loading>Carregando</Button>
+      <Button type="primary" disabled>Disabled</Button>
+      <Button type="secondary">Normal</Button>
+    </Space>
+  );
+}`;
+
 const StatesDemo = () => (
   <DemoCard
     title="Estados"
     description="Demonstração de estados comuns (loading, disabled, etc.)."
     usageText="Use as props loading, disabled ou outras props nativas do Ant Design."
+    codeExample={statesCode}
     renderButtons={() => (
       <Space size="small" wrap>
         <Button type="primary" loading>
@@ -169,7 +224,8 @@ export const ButtonsShowcase: React.FC = () => (
   <Space direction="vertical" size={24} style={{ width: "100%" }}>
     <Title level={2}>Button</Title>
     <Paragraph>
-      Botões do design system com tipos, tamanhos, ícones e estados personalizados.
+      Botões do design system com tipos, tamanhos, ícones e estados
+      personalizados.
     </Paragraph>
     <TypesDemo />
     <SizesDemo />
@@ -177,4 +233,3 @@ export const ButtonsShowcase: React.FC = () => (
     <StatesDemo />
   </Space>
 );
-
